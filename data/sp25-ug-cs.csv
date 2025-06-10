@@ -1,0 +1,112 @@
+Day,Start Time,End Time,Course,UMS Class No.,Teacher
+MW,8:30,9:45,Information Security and Ethics,98642,Dr. Imran Khan
+MW,8:30,9:45,Information Security and Ethics,98352,Dr. Imran Khan
+MW,8:30,9:45,Pakistan History,98668,Dr. Moiz Khan
+MW,8:30,9:45,Pakistan History,98354,Dr. Jaffar Ahmed
+MW,8:30,9:45,Competitive Programming,98358,Dr. Imran Rauf
+MW,8:30,9:45,Introduction to Artificial Intelligence,98355,Dr. Syed Ali Raza
+MW,8:30,9:45,Physics,98356,Mr. Syed Mujahid Ali
+MW,8:30,9:45,Calculus-II,98454,Dr. Maqsood Alam
+MW,8:30,9:45,Data Structures,98528,Ms. Sadaf Alvi
+MW,8:30,9:45,Speech Communication,98357,Dr. Nadya Qamar Chishty
+MW,10:00,11:15,Business Intelligience,98460,Ms. Abeera Tariq
+MW,10:00,11:15,Competitive Programming,98358,Dr. Imran Rauf
+MW,10:00,11:15,Speech Communication,98362,Ms. Maria Hassan Siddiqui
+MW,10:00,11:15,Computer Communication and Networking,98403,Mr. M.Waseem Arain
+MW,10:00,11:15,Speech Communication,98363,Ms. Tazeen Erum
+MW,10:00,11:15,Theory of Automata,98393,Dr. Shahid Hussain
+MW,10:00,11:15,Theory of Automata,98396,Dr. Shahid Hussain
+MW,10:00,11:15,Design and Analysis of Algorithm,98399,Dr. Jibran Rashid
+MW,10:00,11:15,Design and Analysis of Algorithm,98400,Dr. Jibran Rashid
+MW,10:00,11:15,Computer Communication and Networking,98657,Ms. Tasbiha Fatima
+MW,11:30,12:45,Information Security and Ethics,98644,Dr. Syed Irfan Nabi
+MW,11:30,12:45,Information Security and Ethics,98405,Dr. Syed Irfan Nabi
+MW,11:30,12:45,Pakistan History,98655,Ms. Parmal Ahmed
+MW,11:30,12:45,Business Intelligience,98492,Ms. Abeera Tariq
+M,11:30,14:15,Computer Communication and Networking,98657,Ms. Tasbiha Fatima
+W,11:30,14:15,Computer Communication and Networking,98403,Mr. M. Waseem Arain
+MW,11:30,12:45,Introduction to Text Analytics,98419,Dr. Sajjad Haider
+MW,11:30,12:45,Speech Communication,98414,Ms. Maria Hassan Siddiqui
+MW,11:30,12:45,Speech Communication,98407,Ms. Tazeen Erum
+MW,11:30,12:45,Design and Analysis of Algorithm,98420,Dr. Jibran Rashid
+MW,11:30,12:45,Design and Analysis of Algorithm,98422,Dr. Jibran Rashid
+M,13:00,15:45,Computer Architecture and Assembly Language,98472,Ms. Asma Tauqeer
+W,13:00,15:45,Computer Architecture and Assembly Language,98504,Ms. Mehwish Zafar
+MW,13:00,14:15,Speech Communication,98388,Ms. Tehmina Qureshi
+MW,13:00,14:15,Speech Communication,98686,Ms. Safia Mahmood
+MW,13:00,14:15,Physics,98868,Mr. Waqar Ahmad
+MW,13:00,14:15,Network Security,98437,Dr. Faisal Iradat
+W,14:30,16:10,Topics in History (2 CH),98715,Ms. Parmal Ahmed
+MW,14:30,16:00,Theory of Automata,98442,Dr. Imran Rauf
+MW,14:30,16:00,Computer Communication and Networking,98443,Mr. M. Waseem Arian
+MW,14:30,16:00,Speech Communication,98555,Ms. Safia Mahmood
+MW,14:30,16:00,Digital Forensics,98641,Dr. Faisal Iradat
+M,14:30,16:10,Topics in History (2 CH),98673,Dr. Moiz Khan
+M,14:30,16:10,Topics in History (2 CH),98674,Dr. Moiz Khan
+MW,16:00,17:15,Theory of Automata,98445,Dr. Imran Rauf
+MW,16:00,17:15,Object Oriented Programming Technique,98444,Mr. Ahmed Akhtar
+MW,16:00,17:15,Speech Communication,98446,Mr. Farhan Shaukat
+M,16:00,18:45,Computer Communication and Networking,98443,Mr. M. Waseem Arain
+R,8:30,11:15,Interaction Design,98712,Mr. M. Arsalan Iqbal
+TR,8:30,9:45,Physics,98456,Prof. Muhammad Naeem Khan
+T,8:30,11:15,Computer Architecture and Assembly Language,98503,Ms. Asma Tauqeer
+TR,10:00,11:15,Calculus-II,98462,Dr. Maqsood Alam
+TR,10:00,11:15,Physics,98459,Prof. Muhammad Naeem Khan
+TR,10:00,11:15,Introduction to Artificial Intelligence,98464,Ms. Sumaira Saeed
+TR,10:00,11:15,Introduction to Text Analytics,98466,Ms. Solat Jabeen
+TR,10:00,11:15,Parallel and Distributed Computing,98469,Mr. M. Zain Uddin
+TR,10:00,11:15,Computer Communication and Networking,98470,Mr. M. Waseem Arain
+TR,10:00,11:15,Computer Communication and Networking,98471,Ms.Tasbiha Fatima
+TR,10:00,11:15,Computer Architecture and Assembly Language,98472,Dr. Salman Zafar
+TR,10:00,11:15,Computer Architecture and Assembly Language,98496,Dr. Salman Zafar
+T,11:30,14:15,Computer Communication and Networking,98471,Ms. Tasbiha Fatima
+R,11:30,14:15,Parallel and Distributed Computing,98469,Mr. M. Zain Uddin
+TR,11:30,12:45,Introduction to Artificial Intelligence,98493,Dr. Syed Ali Raza
+TR,11:30,12:45,Introduction to Text Analytics,98494,Ms. Solat Jabeen
+TR,11:30,12:45,Introduction to Programming,98424,Ms. Hira Zahid
+TR,11:30,12:45,Data Warehousing,98495,Dr. Tariq Mehmood
+TR,11:30,12:45,Object Oriented Programming Technique,98502,Ms. Samreen Kazi
+TR,11:30,12:45,Computer Architecture and Assembly Language,98503,Dr. Salman Zafar
+TR,11:30,12:45,Computer Architecture and Assembly Language,98504,Dr. Salman Zafar
+T,11:30,14:15,Computer Communication and Networking,98470,Mr. M. Waseem Arain
+T,13:00,15:45,Computer Architecture and Assembly Language,98496,Ms. Mewish Zafar
+TR,13:00,14:15,Introduction to Artificial Intelligence,98505,Dr.Tahir Syed
+TR,13:00,14:15,Parallel and Distributed Computing,98506,Mr. Adil Saleem
+TR,13:00,14:15,Object Oriented Programming Technique,98509,Ms. Samreen Kazi
+TR,14:30,15:45,Discrete Mathematics,98510,Dr. Shoaib Jamall
+TR,14:30,15:45,Discrete Mathematics,98511,Dr. Shoaib Jamall
+R,14:30,17:15,Parallel and Distributed Computing,98506,Mr. Adil Saleem
+TR,14:30,15:45,Neural Networks and Deep Learning,98513,Dr. Atif Tahir
+TR,14:30,15:45,Introduction to Artificial Intelligence,98512,Dr.Tahir Syed
+TR,14:30,15:45,Parallel and Distributed Computing,98515,Dr. Muhammad Saeed
+TR,14:30,15:45,Physics,98516,Dr. Shabana Nisar
+TR,14:30,15:45,Computer Architecture and Assembly Language,98473,Dr. Salman Zafar
+TR,16:00,17:15,Discrete Mathematics,98517,Dr. Shoaib Jamall
+TR,16:00,17:15,Discrete Mathematics,98518,Dr. Shoaib Jamall
+TR,16:00,17:15,Discrete Mathematics,98519,Dr. Shoaib Jamall
+TR,16:00,17:15,Object Oriented Programming Technique,98521,Mr. Ahmed Akhtar
+R,16:00,18:45,Tech Product Development,98524,Mr. Jawwad Farid
+TR,16:00,17:15,Parallel and Distributed Computing,98522,Dr. Muhammad Saeed
+TR,16:00,17:15,Physics,98523,Dr. Shabana Nisar
+T,16:00,17:15,Object Oriented Programming Technique,98497,Mr. Behraj Khan
+TR,17:30,20:15,Parallel and Distributed Computing,98515,Dr. M. Saeed
+TR,17:30,20:15,Parallel and Distributed Computing,98522,Dr. M. Saeed
+S,8:30,11:15,Pakistan History,98525,Dr. Moiz Khan
+F,8:30,11:15,Computer Architecture and Assembly Language,98473,Ms. Asma Tauqeer
+S,8:30,11:15,Introduction to Programming,98424,Ms. Hira Zahid
+F,8:30,11:15,Data Structures,98528,Ms. Sadaf Alvi
+F,8:30,11:15,Applied Data Analysis,98408,Dr. Jawwad Farid
+F,8:30,11:15,Software Architecture & Design,98526,Mr. Aneeq Hashmi
+FS,8:30,9:45,Calculus-II,98554,Ms. Samreen Zaman
+S,10:00,12:45,Object Oriented Programming Technique,98502,Ms. Samreen Kazi
+S,10:00,12:45,Object Oriented Programming Technique,98497,Mr. Behraj Khan
+FS,10:00,11:15,Calculus-II,98552,Ms. Samreen Zaman
+F,10:00,12:45,Object Oriented Programming Technique,98444,Ms. Mehwish Zafar
+S,10:00,12:45,Object Oriented Programming Technique,98521,Mr. Ahmed Akhtar
+S,11:30,14:15,Introduction to Computer Vision,98531,Mr. S. Sualeh Ali
+S,11:30,14:15,Object Oriented Programming Technique,98497,Mr. Behraj Khan
+S,14:30,17:15,Object Oriented Programming Technique,98509,Ms. Samreen Kazi
+F,14:30,17:15,Application Development for mobile devices,98532,Mr. Rao M. Noman
+S,15:00,16:00,Calculus-II,98553,Mr. Syed Shujaat Hussain
+F,14:30,16:10,Topics in Literature (2 CH),98675,Dr. Faisal Nazir
+S,14:30,16:10,Topics in Literature (2 CH),98676,Ms. Rabia Saadi

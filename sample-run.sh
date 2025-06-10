@@ -1,0 +1,1 @@
+python3 make_schedule.py --csv data/sp25-ug-cs.csv --courses "Computer Architecture and Assembly Language" "Computer Communication and Networking" "Introduction to Artificial Intelligence" "Theory of Automata" "Pakistan History"

@@ -1,10 +1,16 @@
 from flask import Flask, render_template, request, jsonify
 import csv
+import os
 from collections import defaultdict
 from datetime import datetime
 from constraint import Problem
 
-app = Flask(__name__)
+app = Flask(__name__, 
+            static_folder='static',
+            template_folder='templates')
+
+# Use environment variable for port (Railway requirement)
+PORT = int(os.environ.get('PORT', 5000))
 
 # Day mapping to expand day codes
 DAY_MAP = {
@@ -279,4 +285,5 @@ def generate_schedules():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    PORT = int(os.environ.get('PORT', 5000))
+    app.run(host='0.0.0.0', port=PORT, debug=False)

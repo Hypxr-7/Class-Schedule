@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Class Schedule Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>🗓️ Class Schedule Generator</h1>
+        
+        <div class="course-selection">
+            <h2>Select Course Sections</h2>
+            <input type="text" id="courseSearch" class="search-box" placeholder="Search courses, instructors, or times...">
+            <div class="selected-count">Selected: <span id="selectedCount">0</span> sections</div>
+            
+            <div class="section-grid" id="sectionGrid">
+                {% for section in sections %}
+                <div class="section-item" data-section="{{ section.section_id }}">
+                    <div class="section-header">
+                        <h3>{{ section.course_name }}</h3>
+                        <span class="section-code">{{ section.ums_class_no }}</span>
+                    </div>
+                    <div class="section-details">
+                        <p class="instructor">👨‍🏫 {{ section.teacher }}</p>
+                        <p class="schedule">🕐 {{ section.sessions }}</p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="controls">
+            <button class="btn" id="generateBtn" disabled>Generate Schedules</button>
+            <button class="btn btn-clear" id="clearBtn">Clear Selection</button>
+        </div>
+        
+        <div class="loading" id="loading">
+            <p>⏳ Generating schedules...</p>
+        </div>
+        
+        <div class="error" id="error"></div>
+        
+        <div class="results" id="results">
+            <h2>Generated Schedules</h2>
+            <div class="schedule-nav">
+                <div>
+                    <button class="btn" id="prevBtn" disabled>← Previous</button>
+                    <button class="btn" id="nextBtn">Next →</button>
+                </div>
+                <div>
+                    Schedule <span id="currentSchedule">1</span> of <span id="totalSchedules">0</span>
+                </div>
+            </div>
+            
+            <div id="scheduleContainer"></div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+</body>
+</html>

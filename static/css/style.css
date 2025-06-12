@@ -259,6 +259,7 @@ h3 {
     background-color: var(--bg-tertiary);
     color: var(--text-primary);
     transition: border-color 0.3s ease;
+    box-sizing: border-box;
 }
 
 .search-box:focus {
@@ -643,9 +644,13 @@ h3 {
 }
 
 @media (max-width: 480px) {
+    body {
+        padding: 10px; /* Reduce body padding on mobile */
+    }
+
     .container {
         padding: 15px;
-        margin: 10px;
+        margin: 5px;
     }
     
     h1 {
@@ -663,6 +668,12 @@ h3 {
     
     .time-column {
         width: 70px;
+    }
+
+    .search-box {
+        padding: 10px; /* Reduce padding on mobile */
+        font-size: 16px; /* Prevent zoom on iOS */
+        margin-bottom: 15px;
     }
     
     .search-filter-section {

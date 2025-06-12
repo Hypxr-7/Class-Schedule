@@ -16,6 +16,17 @@
     --purple: #c678dd;
     --cyan: #56b6c2;
     --orange: #d19a66;
+
+    --color1: #e06c75; /* Red */
+    --color2: #98c379; /* Green */
+    --color3: #e5c07b; /* Yellow */
+    --color4: #61afef; /* Blue */
+    --color5: #c678dd; /* Purple */
+    --color6: #56b6c2; /* Cyan */
+    --color7: #d19a66; /* Orange */
+    --color8: #be5046; /* Dark Red */
+    --color9: #5c6370; /* Gray */
+    --color10: #9ca3af; /* Light Gray */
 }
 
 body {
@@ -176,12 +187,12 @@ h3 {
     color: var(--text-secondary);
 }
 
-.instructor {
-    font-weight: 600;
+.section-details .instructor {
+    font-weight: bolder;
     color: var(--warning);
 }
 
-.schedule {
+.section-details .schedule {
     font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
     font-size: 13px;
     color: var(--cyan);
@@ -744,18 +755,3 @@ h3 {
 .section-item {
     animation: fadeIn 0.3s ease-out;
 }
-
-/* Custom course colors for dark theme */
-.course-colors {
-    --color1: #e06c75; /* Red */
-    --color2: #98c379; /* Green */
-    --color3: #e5c07b; /* Yellow */
-    --color4: #61afef; /* Blue */
-    --color5: #c678dd; /* Purple */
-    --color6: #56b6c2; /* Cyan */
-    --color7: #d19a66; /* Orange */
-    --color8: #be5046; /* Dark Red */
-    --color9: #5c6370; /* Gray */
-    --color10: #9ca3af; /* Light Gray */
-}
-

@@ -12,22 +12,43 @@
         
         <div class="course-selection">
             <h2>Select Course Sections</h2>
-            <input type="text" id="courseSearch" class="search-box" placeholder="Search courses, instructors, or times...">
+            <input type="text" id="courseSearch" class="search-box" placeholder="Search courses or instructors...">
             <div class="selected-count">Selected: <span id="selectedCount">0</span> sections</div>
             
+            <!-- Top pagination info and results counter -->
+            <div class="pagination-info">
+                <div class="results-counter" id="resultsCounter">Loading sections...</div>
+                <div class="page-controls">
+                    <button class="btn btn-secondary" id="prevPageBtn" disabled>← Previous</button>
+                    <span id="pageInfo" class="page-info">Page 1 of 1</span>
+                    <button class="btn btn-secondary" id="nextPageBtn">Next →</button>
+                </div>
+            </div>
+            
             <div class="section-grid" id="sectionGrid">
+                <!-- Sections will be populated dynamically -->
                 {% for section in sections %}
-                <div class="section-item" data-section="{{ section.section_id }}">
+                <div class="section-item" data-section="{{ section.section_id }}" style="display: none;">
                     <div class="section-header">
                         <h3>{{ section.course_name }}</h3>
                         <span class="section-code">{{ section.ums_class_no }}</span>
                     </div>
                     <div class="section-details">
-                        <p class="instructor">👨‍🏫 {{ section.teacher }}</p>
-                        <p class="schedule">🕐 {{ section.sessions }}</p>
+                        <p class="instructor"> {{ section.teacher }}</p>
+                        <p class="schedule"> {{ section.sessions }}</p>
                     </div>
                 </div>
                 {% endfor %}
+            </div>
+            
+            <!-- Bottom pagination controls -->
+            <div class="pagination-info pagination-bottom">
+                <div class="results-counter" id="resultsCounterBottom">Loading sections...</div>
+                <div class="page-controls">
+                    <button class="btn btn-secondary" id="prevPageBtnBottom" disabled>← Previous</button>
+                    <span id="pageInfoBottom" class="page-info">Page 1 of 1</span>
+                    <button class="btn btn-secondary" id="nextPageBtnBottom">Next →</button>
+                </div>
             </div>
         </div>
         

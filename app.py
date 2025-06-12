@@ -5,12 +5,12 @@ from collections import defaultdict
 from datetime import datetime
 from constraint import Problem
 
-app = Flask(__name__, 
-            static_folder='static',
-            template_folder='templates')
 
-# Use environment variable for port (Railway requirement)
-PORT = int(os.environ.get('PORT', 5000))
+app = Flask(__name__)
+
+
+FILENAME = "sp25-ug-cs.csv"
+
 
 # Day mapping to expand day codes
 DAY_MAP = {
@@ -18,6 +18,7 @@ DAY_MAP = {
     "TR": ["T", "R"],
     "FS": ["F", "S"]
 }
+
 
 # Day name mapping for display
 DAY_NAME_MAP = {
@@ -29,60 +30,81 @@ DAY_NAME_MAP = {
     'S': 'Saturday'
 }
 
+
+# convert time into minutes from midnight
 def time_to_minutes(tstr):
     return int(datetime.strptime(tstr, "%H:%M").hour) * 60 + int(datetime.strptime(tstr, "%H:%M").minute)
 
+
+# convert minutes from midnight into time
 def minutes_to_time(minutes):
     return f"{minutes // 60:02d}:{minutes % 60:02d}"
 
+
+# check if two set of days are having a conflict 
 def days_conflict(day1, day2):
+    # handle case where both are 1
     if len(day1) == 1 and len(day2) == 1:
         return day1 == day2
     
+    # handle case where either is 2
     expanded_day1 = [day1] if len(day1) == 1 else list(day1)
     expanded_day2 = [day2] if len(day2) == 1 else list(day2)
     
     return any(d in expanded_day2 for d in expanded_day1)
 
+
+
 def load_courses(csv_filename):
-    courses = defaultdict(list)
+    # A section has Course, UMS Class No, Teacher and Sessions
+    # key is the course name and contains list of all sections of that course
+    courses = defaultdict(list) 
     all_sections = []  # Store all individual sections
     
-    with open(csv_filename, newline='') as csvfile:
+    with open(csv_filename) as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
             course_name = row["Course"].strip()
             class_no = row["UMS Class No."].strip()
             teacher = row["Teacher"].strip()
             day = row["Day"].strip()
-            one_day = row.get("One Day", "").strip()
+            # one_day = row.get("One Day", "").strip()
             start = time_to_minutes(row["Start Time"].strip())
             end = time_to_minutes(row["End Time"].strip())
             
-            if one_day and one_day.lower() != "no":
-                actual_days = [one_day]
-            else:
-                if day in DAY_MAP:
-                    actual_days = DAY_MAP[day]
-                else:
-                    actual_days = [day]
+            # if one_day and one_day.lower() != "no":
+            #     actual_days = [one_day]
+            # else:
 
+            # make a list of days
+            # MW -> [M, W] and M -> [M]
+            if day in DAY_MAP:
+                actual_days = DAY_MAP[day]
+            else:
+                actual_days = [day]
+
+            # gets the section with the given id if found
+            # otherwise gets set to none
+            # added to handle labs as they are for the same course but are listed separately
             section = next((s for s in courses[course_name] if s["UMS Class No."] == class_no), None)
             if section is None:
                 section = {
                     "UMS Class No.": class_no,
-                    "Teacher": teacher,
+                    "Teacher": teacher, # TODO: course may have a lab instructor
                     "Course": course_name,
                     "Sessions": []
                 }
-                courses[course_name].append(section)
-                all_sections.append(section)  # Add to global sections list
+                courses[course_name].append(section)    # add this new section
+                all_sections.append(section)  
             
+            # add the timings and day for the session
             for actual_day in actual_days:
                 section["Sessions"].append((actual_day, start, end))
     
     return courses, all_sections
 
+
+# returns true if there is a conflict between two sections
 def sections_conflict(sec1, sec2):
     for d1, s1, e1 in sec1["Sessions"]:
         for d2, s2, e2 in sec2["Sessions"]:
@@ -91,10 +113,13 @@ def sections_conflict(sec1, sec2):
                     return True
     return False
 
+
+# build the csp based on the selected sections
 def build_csp_for_sections(selected_sections):
     problem = Problem()
     
     # Group sections by course name to ensure only one section per course
+    # "Course1" : ["98869", "97545", "99765"]
     courses_sections = defaultdict(list)
     for section in selected_sections:
         courses_sections[section["Course"]].append(section["UMS Class No."])
@@ -104,25 +129,33 @@ def build_csp_for_sections(selected_sections):
         problem.addVariable(course, section_ids)
     
     # Add constraints to prevent conflicts between sections
+    # similar to cartesian product Sessions x Sessions
     course_names = list(courses_sections.keys())
     for i, c1 in enumerate(course_names):
         for j in range(i + 1, len(course_names)):
             c2 = course_names[j]
             
-            def make_constraint(course1, course2, sections1, sections2):
+            # magic code
+            # somehow add time constraints
+            def make_constraint(sections1, sections2):
                 def no_overlap(class_no1, class_no2):
                     sec1 = next(sec for sec in sections1 if sec["UMS Class No."] == class_no1)
                     sec2 = next(sec for sec in sections2 if sec["UMS Class No."] == class_no2)
                     return not sections_conflict(sec1, sec2)
                 return no_overlap
+        
+
             
             sections1 = [sec for sec in selected_sections if sec["Course"] == c1]
             sections2 = [sec for sec in selected_sections if sec["Course"] == c2]
             
-            problem.addConstraint(make_constraint(c1, c2, sections1, sections2), (c1, c2))
+            problem.addConstraint(make_constraint(sections1, sections2), (c1, c2))
     
+
     return problem
 
+
+# returns number of days in the schedule
 def count_days_from_sections(solution_sections):
     all_days = set()
     for section in solution_sections:
@@ -130,6 +163,8 @@ def count_days_from_sections(solution_sections):
             all_days.add(day)
     return len(all_days)
 
+
+# calculate total gap in minutes for a solution
 def calculate_gaps_from_sections(solution_sections):
     day_sessions = defaultdict(list)
     for section in solution_sections:
@@ -149,6 +184,7 @@ def calculate_gaps_from_sections(solution_sections):
                 total_gap += start_next - end_current
     
     return total_gap
+
 
 def prepare_schedules_for_web_sections(optimized_solutions):
     schedules = []
@@ -187,10 +223,11 @@ def prepare_schedules_for_web_sections(optimized_solutions):
     return schedules
 
 # Load courses data once at startup
-COURSES_DATA, ALL_SECTIONS = load_courses('data/sp25-ug-cs.csv')
+COURSES_DATA, ALL_SECTIONS = load_courses(f'data/{FILENAME}')
 
 @app.route('/')
 def index():
+    # only sending the section cards at this point
     # Prepare sections with detailed information for display
     sections_for_display = []
     for section in ALL_SECTIONS:
@@ -285,5 +322,4 @@ def generate_schedules():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    PORT = int(os.environ.get('PORT', 5000))
-    app.run(host='0.0.0.0', port=PORT, debug=False)
+    app.run(debug=True)

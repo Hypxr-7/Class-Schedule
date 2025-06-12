@@ -1,8 +1,9 @@
-// Global variables
+/* ================================
+   GLOBAL VARIABLES
+   ================================ */
 let selectedSections = new Set();
 let allSchedules = [];
 let currentScheduleIndex = 0;
-// Add pagination variables
 let allSections = [];
 let filteredSections = [];
 let currentPage = 0;
@@ -13,10 +14,20 @@ const courseColors = [
     "#4682B4", "#FF69B4", "#8B4513", "#2F4F4F", "#800080"
 ];
 
-// Initialize event listeners when DOM is loaded
+/* ================================
+   INITIALIZATION
+   ================================ */
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('DOM loaded, setting up event listeners...');
-    // Store all sections for pagination
+    console.log('DOM loaded, initializing application...');
+    initializeSections();
+    setupEventListeners();
+    displayCurrentPage();
+});
+
+/**
+ * Initialize sections data and convert schedules to 12-hour format
+ */
+function initializeSections() {
     allSections = Array.from(document.querySelectorAll('.section-item')).map(item => ({
         element: item,
         data: {
@@ -30,42 +41,14 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Convert all schedule times to 12-hour format
     allSections.forEach(sectionItem => {
-    const scheduleElement = sectionItem.element.querySelector('.schedule');
-    if (scheduleElement) {
-        scheduleElement.innerHTML = convertScheduleTo12Hour(scheduleElement.textContent);
-        // Update the stored data as well
-        sectionItem.data.schedule = scheduleElement.textContent.toLowerCase();
-    }
-});
+        const scheduleElement = sectionItem.element.querySelector('.schedule');
+        if (scheduleElement) {
+            scheduleElement.innerHTML = convertScheduleTo12Hour(scheduleElement.textContent);
+            sectionItem.data.schedule = scheduleElement.textContent.toLowerCase();
+        }
+    });
 
     filteredSections = [...allSections];
-    setupEventListeners();
-    displayCurrentPage();
-});
-
-function convertScheduleTo12Hour(scheduleText) {
-    // First convert time patterns like "14:30-16:00" or "09:00-10:30" to 12-hour format
-    let converted = scheduleText.replace(/(\d{1,2}):(\d{2})-(\d{1,2}):(\d{2})/g, (match, startHour, startMin, endHour, endMin) => {
-        const startTime = formatTime12Hour(`${startHour.padStart(2, '0')}:${startMin}`);
-        const endTime = formatTime12Hour(`${endHour.padStart(2, '0')}:${endMin}`);
-        return `${startTime}-${endTime}`;
-    });
-    
-    // Replace commas with line breaks for better formatting
-    return converted.replace(/,\s*/g, '<br>');
-}
-
-
-/**
- * Convert 24-hour time to 12-hour AM/PM format
- * @param {string} timeStr - Time in HH:MM format
- * @returns {string} Time in 12-hour AM/PM format
- */
-function formatTime12Hour(timeStr) {
-    const [hours, minutes] = timeStr.split(':').map(Number);
-    const period = hours >= 12 ? 'PM' : 'AM';
-    const displayHours = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours;
-    return `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
 }
 
 /**
@@ -86,27 +69,79 @@ function setupEventListeners() {
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     
-    // Pagination buttons
-    const prevPageBtn = document.getElementById('prevPageBtn');
-    const nextPageBtn = document.getElementById('nextPageBtn');
-
-    const prevPageBtnBottom = document.getElementById('prevPageBtnBottom');
-    const nextPageBtnBottom = document.getElementById('nextPageBtnBottom');
-    
-    
     if (generateBtn) generateBtn.addEventListener('click', generateSchedules);
     if (clearBtn) clearBtn.addEventListener('click', clearSelection);
     if (prevBtn) prevBtn.addEventListener('click', () => navigateSchedule(-1));
     if (nextBtn) nextBtn.addEventListener('click', () => navigateSchedule(1));
-    if (prevPageBtn) prevPageBtn.addEventListener('click', () => changePage(-1));
-    if (nextPageBtn) nextPageBtn.addEventListener('click', () => changePage(1));
     
-    if (prevPageBtnBottom) prevPageBtnBottom.addEventListener('click', () => changePage(-1));
-    if (nextPageBtnBottom) nextPageBtnBottom.addEventListener('click', () => changePage(1));
+    // Pagination buttons (top and bottom)
+    setupPaginationListeners();
     
-    console.log('Event listeners set up complete');
+    console.log('Event listeners initialized');
 }
 
+/**
+ * Set up pagination event listeners
+ */
+function setupPaginationListeners() {
+    const paginationButtons = [
+        { id: 'prevPageBtn', direction: -1 },
+        { id: 'nextPageBtn', direction: 1 },
+        { id: 'prevPageBtnBottom', direction: -1 },
+        { id: 'nextPageBtnBottom', direction: 1 }
+    ];
+    
+    paginationButtons.forEach(btn => {
+        const element = document.getElementById(btn.id);
+        if (element) {
+            element.addEventListener('click', () => changePage(btn.direction));
+        }
+    });
+}
+
+/* ================================
+   TIME FORMATTING UTILITIES
+   ================================ */
+/**
+ * Convert schedule text to 12-hour format with line breaks
+ * @param {string} scheduleText - Original schedule text
+ * @returns {string} Formatted schedule text
+ */
+function convertScheduleTo12Hour(scheduleText) {
+    let converted = scheduleText.replace(/(\d{1,2}):(\d{2})-(\d{1,2}):(\d{2})/g, (match, startHour, startMin, endHour, endMin) => {
+        const startTime = formatTime12Hour(`${startHour.padStart(2, '0')}:${startMin}`);
+        const endTime = formatTime12Hour(`${endHour.padStart(2, '0')}:${endMin}`);
+        return `${startTime}-${endTime}`;
+    });
+    
+    return converted.replace(/,\s*/g, '<br>');
+}
+
+/**
+ * Convert 24-hour time to 12-hour AM/PM format
+ * @param {string} timeStr - Time in HH:MM format
+ * @returns {string} Time in 12-hour AM/PM format
+ */
+function formatTime12Hour(timeStr) {
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    const period = hours >= 12 ? 'PM' : 'AM';
+    const displayHours = hours === 0 ? 12 : hours > 12 ? hours - 12 : hours;
+    return `${displayHours}:${minutes.toString().padStart(2, '0')} ${period}`;
+}
+
+/**
+ * Convert time string to minutes since midnight
+ * @param {string} timeStr - Time in HH:MM format
+ * @returns {number} Minutes since midnight
+ */
+function timeToMinutes(timeStr) {
+    const [hours, minutes] = timeStr.split(':').map(Number);
+    return hours * 60 + minutes;
+}
+
+/* ================================
+   PAGINATION FUNCTIONS
+   ================================ */
 /**
  * Display current page of sections
  */
@@ -114,24 +149,19 @@ function displayCurrentPage() {
     const sectionGrid = document.getElementById('sectionGrid');
     if (!sectionGrid) return;
     
-    // Clear current display
     sectionGrid.innerHTML = '';
     
-    // Calculate start and end indices
     const startIndex = currentPage * sectionsPerPage;
     const endIndex = Math.min(startIndex + sectionsPerPage, filteredSections.length);
     
-    // Display sections for current page
     for (let i = startIndex; i < endIndex; i++) {
         const sectionItem = filteredSections[i];
         const clonedElement = sectionItem.element.cloneNode(true);
         
-        // Re-attach event listener to cloned element
         clonedElement.addEventListener('click', function() {
             toggleSection(this.dataset.section, this);
         });
         
-        // Maintain selection state
         if (selectedSections.has(sectionItem.data.section)) {
             clonedElement.classList.add('selected');
         }
@@ -140,7 +170,6 @@ function displayCurrentPage() {
         sectionGrid.appendChild(clonedElement);
     }
     
-    // Update pagination info
     updatePaginationInfo();
 }
 
@@ -148,18 +177,6 @@ function displayCurrentPage() {
  * Update pagination information and button states
  */
 function updatePaginationInfo() {
-    // Top pagination elements
-    const pageInfo = document.getElementById('pageInfo');
-    const prevPageBtn = document.getElementById('prevPageBtn');
-    const nextPageBtn = document.getElementById('nextPageBtn');
-    const resultsCounter = document.getElementById('resultsCounter');
-    
-    // Bottom pagination elements
-    const pageInfoBottom = document.getElementById('pageInfoBottom');
-    const prevPageBtnBottom = document.getElementById('prevPageBtnBottom');
-    const nextPageBtnBottom = document.getElementById('nextPageBtnBottom');
-    const resultsCounterBottom = document.getElementById('resultsCounterBottom');
-    
     const totalPages = Math.ceil(filteredSections.length / sectionsPerPage);
     const startIndex = currentPage * sectionsPerPage + 1;
     const endIndex = Math.min((currentPage + 1) * sectionsPerPage, filteredSections.length);
@@ -167,17 +184,23 @@ function updatePaginationInfo() {
     const pageText = `Page ${currentPage + 1} of ${totalPages}`;
     const resultsText = `Showing ${startIndex}-${endIndex} of ${filteredSections.length} sections`;
     
-    // Update top pagination
-    if (pageInfo) pageInfo.textContent = pageText;
-    if (resultsCounter) resultsCounter.textContent = resultsText;
-    if (prevPageBtn) prevPageBtn.disabled = currentPage === 0;
-    if (nextPageBtn) nextPageBtn.disabled = currentPage >= totalPages - 1;
+    // Update all pagination elements
+    const elements = [
+        { page: 'pageInfo', results: 'resultsCounter', prev: 'prevPageBtn', next: 'nextPageBtn' },
+        { page: 'pageInfoBottom', results: 'resultsCounterBottom', prev: 'prevPageBtnBottom', next: 'nextPageBtnBottom' }
+    ];
     
-    // Update bottom pagination
-    if (pageInfoBottom) pageInfoBottom.textContent = pageText;
-    if (resultsCounterBottom) resultsCounterBottom.textContent = resultsText;
-    if (prevPageBtnBottom) prevPageBtnBottom.disabled = currentPage === 0;
-    if (nextPageBtnBottom) nextPageBtnBottom.disabled = currentPage >= totalPages - 1;
+    elements.forEach(set => {
+        const pageEl = document.getElementById(set.page);
+        const resultsEl = document.getElementById(set.results);
+        const prevEl = document.getElementById(set.prev);
+        const nextEl = document.getElementById(set.next);
+        
+        if (pageEl) pageEl.textContent = pageText;
+        if (resultsEl) resultsEl.textContent = resultsText;
+        if (prevEl) prevEl.disabled = currentPage === 0;
+        if (nextEl) nextEl.disabled = currentPage >= totalPages - 1;
+    });
 }
 
 /**
@@ -194,29 +217,25 @@ function changePage(direction) {
     }
 }
 
+/* ================================
+   SECTION MANAGEMENT
+   ================================ */
 /**
  * Toggle section selection
  * @param {string} sectionId - ID of the section
  * @param {HTMLElement} element - The section item element
  */
 function toggleSection(sectionId, element) {
-    console.log('Toggling section:', sectionId);
-    
     if (selectedSections.has(sectionId)) {
         selectedSections.delete(sectionId);
         element.classList.remove('selected');
-        console.log('Removed section:', sectionId);
     } else {
         selectedSections.add(sectionId);
         element.classList.add('selected');
-        console.log('Added section:', sectionId);
     }
     
     updateSelectedCount();
-    const generateBtn = document.getElementById('generateBtn');
-    if (generateBtn) {
-        generateBtn.disabled = selectedSections.size === 0;
-    }
+    updateGenerateButton();
 }
 
 /**
@@ -227,24 +246,28 @@ function updateSelectedCount() {
     if (countElement) {
         countElement.textContent = selectedSections.size;
     }
-    console.log('Selected sections count:', selectedSections.size);
+}
+
+/**
+ * Update generate button state
+ */
+function updateGenerateButton() {
+    const generateBtn = document.getElementById('generateBtn');
+    if (generateBtn) {
+        generateBtn.disabled = selectedSections.size === 0;
+    }
 }
 
 /**
  * Clear all section selections
  */
 function clearSelection() {
-    console.log('Clearing all selections');
     selectedSections.clear();
-    
-    // Update display
     displayCurrentPage();
     updateSelectedCount();
+    updateGenerateButton();
     
-    const generateBtn = document.getElementById('generateBtn');
     const results = document.getElementById('results');
-    
-    if (generateBtn) generateBtn.disabled = true;
     if (results) results.style.display = 'none';
 }
 
@@ -255,45 +278,39 @@ function clearSelection() {
 function filterSections(searchTerm) {
     const term = searchTerm.toLowerCase();
     
-    if (term === '') {
-        filteredSections = [...allSections];
-    } else {
-        filteredSections = allSections.filter(sectionItem => {
-            const data = sectionItem.data;
-            return data.courseName.includes(term) || 
-                   data.instructor.includes(term) || 
-                   data.schedule.includes(term) || 
-                   data.sectionCode.includes(term);
-        });
-    }
+    filteredSections = term === '' ? [...allSections] : allSections.filter(sectionItem => {
+        const data = sectionItem.data;
+        return data.courseName.includes(term) || 
+               data.instructor.includes(term) || 
+               data.schedule.includes(term) || 
+               data.sectionCode.includes(term);
+    });
     
-    // Reset to first page when filtering
     currentPage = 0;
     displayCurrentPage();
 }
 
+/* ================================
+   SCHEDULE GENERATION
+   ================================ */
 /**
  * Generate schedules by calling the backend API
  */
 async function generateSchedules() {
     if (selectedSections.size === 0) return;
     
-    console.log('Generating schedules for:', Array.from(selectedSections));
-    
     const loading = document.getElementById('loading');
     const error = document.getElementById('error');
     const results = document.getElementById('results');
     
-    if (loading) loading.style.display = 'block';
-    if (error) error.style.display = 'none';
-    if (results) results.style.display = 'none';
+    showLoading(true);
+    hideError();
+    hideResults();
     
     try {
         const response = await fetch('/generate_schedules', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 sections: Array.from(selectedSections),
                 max_schedules: 50
@@ -301,13 +318,12 @@ async function generateSchedules() {
         });
         
         const data = await response.json();
-        console.log('Response received:', data);
         
         if (data.success) {
             allSchedules = data.schedules;
             currentScheduleIndex = 0;
             displaySchedules();
-            if (results) results.style.display = 'block';
+            showResults();
         } else {
             showError(data.error);
         }
@@ -316,7 +332,19 @@ async function generateSchedules() {
         showError('Failed to generate schedules. Please try again.');
     }
     
-    if (loading) loading.style.display = 'none';
+    showLoading(false);
+}
+
+/* ================================
+   UI STATE MANAGEMENT
+   ================================ */
+/**
+ * Show/hide loading state
+ * @param {boolean} show - Whether to show loading
+ */
+function showLoading(show) {
+    const loading = document.getElementById('loading');
+    if (loading) loading.style.display = show ? 'block' : 'none';
 }
 
 /**
@@ -332,6 +360,33 @@ function showError(message) {
 }
 
 /**
+ * Hide error message
+ */
+function hideError() {
+    const error = document.getElementById('error');
+    if (error) error.style.display = 'none';
+}
+
+/**
+ * Show results section
+ */
+function showResults() {
+    const results = document.getElementById('results');
+    if (results) results.style.display = 'block';
+}
+
+/**
+ * Hide results section
+ */
+function hideResults() {
+    const results = document.getElementById('results');
+    if (results) results.style.display = 'none';
+}
+
+/* ================================
+   SCHEDULE DISPLAY
+   ================================ */
+/**
  * Display the current schedule
  */
 function displaySchedules() {
@@ -340,40 +395,65 @@ function displaySchedules() {
     const schedule = allSchedules[currentScheduleIndex];
     const container = document.getElementById('scheduleContainer');
     
-    // Update navigation
-    const currentScheduleSpan = document.getElementById('currentSchedule');
-    const totalSchedulesSpan = document.getElementById('totalSchedules');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
+    updateScheduleNavigation();
     
-    if (currentScheduleSpan) currentScheduleSpan.textContent = currentScheduleIndex + 1;
-    if (totalSchedulesSpan) totalSchedulesSpan.textContent = allSchedules.length;
-    if (prevBtn) prevBtn.disabled = currentScheduleIndex === 0;
-    if (nextBtn) nextBtn.disabled = currentScheduleIndex === allSchedules.length - 1;
-    
-    // Generate HTML for current schedule
     if (container) {
         container.innerHTML = generateScheduleHTML(schedule);
     }
 }
 
 /**
+ * Update schedule navigation controls
+ */
+function updateScheduleNavigation() {
+    const elements = {
+        current: document.getElementById('currentSchedule'),
+        total: document.getElementById('totalSchedules'),
+        prev: document.getElementById('prevBtn'),
+        next: document.getElementById('nextBtn')
+    };
+    
+    if (elements.current) elements.current.textContent = currentScheduleIndex + 1;
+    if (elements.total) elements.total.textContent = allSchedules.length;
+    if (elements.prev) elements.prev.disabled = currentScheduleIndex === 0;
+    if (elements.next) elements.next.disabled = currentScheduleIndex === allSchedules.length - 1;
+}
+
+/**
+ * Navigate between schedules
+ * @param {number} direction - Direction to navigate (-1 for previous, 1 for next)
+ */
+function navigateSchedule(direction) {
+    const newIndex = currentScheduleIndex + direction;
+    if (newIndex >= 0 && newIndex < allSchedules.length) {
+        currentScheduleIndex = newIndex;
+        displaySchedules();
+    }
+}
+
+/* ================================
+   SCHEDULE HTML GENERATION
+   ================================ */
+/**
  * Generate HTML for a schedule
  * @param {Object} schedule - Schedule object
  * @returns {string} HTML string
  */
 function generateScheduleHTML(schedule) {
-    const dayOrder = ['M', 'T', 'W', 'R', 'F', 'S'];
-    const sortedDays = Object.keys(schedule.days).sort((a, b) => 
-        dayOrder.indexOf(a) - dayOrder.indexOf(b)
-    );
-    
-    const dayNames = {
-        'M': 'Monday', 'T': 'Tuesday', 'W': 'Wednesday', 
-        'R': 'Thursday', 'F': 'Friday', 'S': 'Saturday'
-    };
-    
-    let html = `
+    return `
+        ${generateMetricsHTML(schedule)}
+        ${generateTimetableHTML(schedule)}
+        ${generateCourseDetailsHTML(schedule)}
+    `;
+}
+
+/**
+ * Generate metrics HTML
+ * @param {Object} schedule - Schedule object
+ * @returns {string} HTML string
+ */
+function generateMetricsHTML(schedule) {
+    return `
         <div class="metrics">
             <div class="metric">
                 <div class="metric-value">${schedule.days_count}</div>
@@ -388,64 +468,47 @@ function generateScheduleHTML(schedule) {
                 <div class="metric-label">Total Gap Time</div>
             </div>
         </div>
-        
+    `;
+}
+
+/**
+ * Generate timetable HTML
+ * @param {Object} schedule - Schedule object
+ * @returns {string} HTML string
+ */
+function generateTimetableHTML(schedule) {
+    const dayOrder = ['M', 'T', 'W', 'R', 'F', 'S'];
+    const dayNames = {
+        'M': 'Monday', 'T': 'Tuesday', 'W': 'Wednesday', 
+        'R': 'Thursday', 'F': 'Friday', 'S': 'Saturday'
+    };
+    const sortedDays = Object.keys(schedule.days).sort((a, b) => 
+        dayOrder.indexOf(a) - dayOrder.indexOf(b)
+    );
+    
+    let html = `
         <h3>Timetable View</h3>
         <table class="timetable">
             <thead>
                 <tr>
                     <th class="time-column">Time</th>
-    `;
-    
-    // Add day headers
-    sortedDays.forEach(day => {
-        html += `<th>${dayNames[day] || day}</th>`;
-    });
-    
-    html += `
+                    ${sortedDays.map(day => `<th>${dayNames[day] || day}</th>`).join('')}
                 </tr>
             </thead>
             <tbody>
     `;
     
-    // Generate time slots
     const timeSlots = generateTimeSlots();
     timeSlots.forEach(timeSlot => {
         html += `<tr><td class="time-column">${formatTime12Hour(timeSlot)}</td>`;
         
         sortedDays.forEach(day => {
             html += '<td>';
-            
             const sessions = schedule.days[day] || [];
-            sessions.forEach((session, index) => {
-                // Only show the course block at its exact start time
+            
+            sessions.forEach(session => {
                 if (session.start === timeSlot) {
-                    const duration = (timeToMinutes(session.end) - timeToMinutes(session.start)) / 30;
-                    const height = duration * 40 - 4;
-                    const color = courseColors[Object.keys(schedule.courses).indexOf(session.course) % courseColors.length];
-                    
-                    const shortName = session.course.split(' ').filter(w => w.length > 3 || w.match(/^[A-Z]+$/)).join(' ');
-                    const displayName = shortName.length > 25 ? shortName.substring(0, 22) + '...' : shortName;
-                    
-                    // Get instructor name - ensure showing full last name at minimum
-                    const instructor = session.teacher;
-                    let instructorDisplay;
-                    if (instructor.split(' ').length > 1) {
-                        instructorDisplay = instructor.split(' ')[0].charAt(0) + ". " + instructor.split(' ').pop();
-                        if (instructorDisplay.length > 15) {
-                            instructorDisplay = instructor.split(' ').pop(); // Just last name if too long
-                        }
-                    } else {
-                        instructorDisplay = instructor; // Use full name if it's just one word
-                    }
-                    
-                    html += `
-                        <div class="course-slot" style="height: ${height}px; background-color: ${color};" 
-                             title="${session.course} - Section ${session.section} - ${session.teacher}">
-                            <strong>${displayName}</strong><br>
-                            ${formatTime12Hour(session.start)} - ${formatTime12Hour(session.end)}<br>
-                            <small>Sec: ${session.section}<br>${instructorDisplay}</small>
-                        </div>
-                    `;
+                    html += generateCourseSlotHTML(session, schedule);
                 }
             });
             
@@ -455,16 +518,61 @@ function generateScheduleHTML(schedule) {
         html += '</tr>';
     });
     
-    html += `
-            </tbody>
-        </table>
-        
+    html += '</tbody></table>';
+    return html;
+}
+
+/**
+ * Generate course slot HTML
+ * @param {Object} session - Session object
+ * @param {Object} schedule - Schedule object
+ * @returns {string} HTML string
+ */
+function generateCourseSlotHTML(session, schedule) {
+    const duration = (timeToMinutes(session.end) - timeToMinutes(session.start)) / 30;
+    const height = duration * 40 - 4;
+    const color = courseColors[Object.keys(schedule.courses).indexOf(session.course) % courseColors.length];
+    
+    const shortName = session.course.split(' ').filter(w => w.length > 3 || w.match(/^[A-Z]+$/)).join(' ');
+    const displayName = shortName.length > 25 ? shortName.substring(0, 22) + '...' : shortName;
+    
+    const instructorDisplay = formatInstructorName(session.teacher);
+    
+    return `
+        <div class="course-slot" style="height: ${height}px; background-color: ${color};" 
+             title="${session.course} - Section ${session.section} - ${session.teacher}">
+            <strong>${displayName}</strong><br>
+            ${formatTime12Hour(session.start)} - ${formatTime12Hour(session.end)}<br>
+            <small>Sec: ${session.section}<br>${instructorDisplay}</small>
+        </div>
+    `;
+}
+
+/**
+ * Format instructor name for display
+ * @param {string} instructor - Full instructor name
+ * @returns {string} Formatted instructor name
+ */
+function formatInstructorName(instructor) {
+    if (instructor.split(' ').length > 1) {
+        let formatted = instructor.split(' ')[0].charAt(0) + ". " + instructor.split(' ').pop();
+        return formatted.length > 15 ? instructor.split(' ').pop() : formatted;
+    }
+    return instructor;
+}
+
+/**
+ * Generate course details HTML
+ * @param {Object} schedule - Schedule object
+ * @returns {string} HTML string
+ */
+function generateCourseDetailsHTML(schedule) {
+    let html = `
         <div class="course-details">
             <h3>Selected Sections</h3>
             <div class="course-list">
     `;
     
-    // Add course details
     Object.entries(schedule.courses).forEach(([courseName, courseInfo]) => {
         html += `
             <div class="course-card">
@@ -475,17 +583,13 @@ function generateScheduleHTML(schedule) {
         `;
     });
     
-    html += `
-            </div>
-        </div>
-    `;
-    
+    html += '</div></div>';
     return html;
 }
 
 /**
- * Generate time slots for the timetable
- * @returns {Array} Array of time slots
+ * Generate time slots for the timetable (8:00 AM to 6:30 PM)
+ * @returns {Array} Array of time slots in HH:MM format
  */
 function generateTimeSlots() {
     const slots = [];
@@ -494,26 +598,4 @@ function generateTimeSlots() {
         slots.push(`${hour.toString().padStart(2, '0')}:30`);
     }
     return slots;
-}
-
-/**
- * Convert time string to minutes
- * @param {string} timeStr - Time in HH:MM format
- * @returns {number} Minutes since midnight
- */
-function timeToMinutes(timeStr) {
-    const [hours, minutes] = timeStr.split(':').map(Number);
-    return hours * 60 + minutes;
-}
-
-/**
- * Navigate between schedules
- * @param {number} direction - Direction to navigate (-1 for previous, 1 for next)
- */
-function navigateSchedule(direction) {
-    const newIndex = currentScheduleIndex + direction;
-    if (newIndex >= 0 && newIndex < allSchedules.length) {
-        currentScheduleIndex = newIndex;
-        displaySchedules();
-    }
 }

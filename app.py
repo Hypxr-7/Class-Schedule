@@ -67,17 +67,12 @@ def load_courses(csv_filename):
             course_name = row["Course"].strip()
             class_no = row["UMS Class No."].strip()
             teacher = row["Teacher"].strip()
+            program = row["Program"].strip()
             day = row["Day"].strip()
-            # one_day = row.get("One Day", "").strip()
             start = time_to_minutes(row["Start Time"].strip())
             end = time_to_minutes(row["End Time"].strip())
             
-            # if one_day and one_day.lower() != "no":
-            #     actual_days = [one_day]
-            # else:
-
-            # make a list of days
-            # MW -> [M, W] and M -> [M]
+           
             if day in DAY_MAP:
                 actual_days = DAY_MAP[day]
             else:
@@ -92,6 +87,7 @@ def load_courses(csv_filename):
                     "UMS Class No.": class_no,
                     "Teacher": teacher, # TODO: course may have a lab instructor
                     "Course": course_name,
+                    "Program": program,
                     "Sessions": []
                 }
                 courses[course_name].append(section)    # add this new section
@@ -202,7 +198,8 @@ def prepare_schedules_for_web_sections(optimized_solutions):
             course_name = section["Course"]
             schedule['courses'][course_name] = {
                 'section': section["UMS Class No."],
-                'teacher': section['Teacher']
+                'teacher': section['Teacher'],
+                'program': section['Program'] 
             }
             
             for day, start, end in section["Sessions"]:
@@ -211,7 +208,8 @@ def prepare_schedules_for_web_sections(optimized_solutions):
                     'end': minutes_to_time(end),
                     'course': course_name,
                     'section': section["UMS Class No."],
-                    'teacher': section['Teacher']
+                    'teacher': section['Teacher'],
+                    'program': section['Program'] 
                 })
         
         for day, sessions in schedule['days'].items():
@@ -243,6 +241,7 @@ def index():
             'course_name': section["Course"],
             'ums_class_no': section["UMS Class No."],
             'teacher': section["Teacher"],
+            'program': section["Program"],
             'sessions': ", ".join(session_info),
             'section_id': f"{section['Course']}_{section['UMS Class No.']}"
         })
@@ -251,6 +250,7 @@ def index():
     sections_for_display.sort(key=lambda x: (x['course_name'], x['ums_class_no']))
     
     return render_template('index.html', sections=sections_for_display)
+
 
 @app.route('/generate_schedules', methods=['POST'])
 def generate_schedules():

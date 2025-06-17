@@ -278,6 +278,17 @@ h3 {
     color: var(--cyan);
 }
 
+.section-details .program {
+    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
+    font-size: 13px;
+    color: var(--purple);
+    font-weight: 600;
+}
+
+.section-details .program::before {
+    margin-right: 4px;
+}
+
 /* ================================
    CONTROLS
    ================================ */

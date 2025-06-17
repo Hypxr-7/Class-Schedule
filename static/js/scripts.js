@@ -35,7 +35,8 @@ function initializeSections() {
             courseName: item.querySelector('h3').textContent.toLowerCase(),
             instructor: item.querySelector('.instructor').textContent.toLowerCase(),
             schedule: item.querySelector('.schedule').textContent.toLowerCase(),
-            sectionCode: item.querySelector('.section-code').textContent.toLowerCase()
+            sectionCode: item.querySelector('.section-code').textContent.toLowerCase(),
+            program: item.querySelector('.program') ? item.querySelector('.program').textContent.toLowerCase() : ''
         }
     }));
 
@@ -283,7 +284,8 @@ function filterSections(searchTerm) {
         return data.courseName.includes(term) || 
                data.instructor.includes(term) || 
                data.schedule.includes(term) || 
-               data.sectionCode.includes(term);
+               data.sectionCode.includes(term) ||
+               data.program.includes(term);;
     });
     
     currentPage = 0;

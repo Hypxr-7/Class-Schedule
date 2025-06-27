@@ -289,7 +289,7 @@ h3 {
     margin-right: 4px;
 }
 
-.section-details campus {
+.section-details .campus {
     font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
     font-size: 13px;
     color: var(--orange);

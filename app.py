@@ -68,6 +68,7 @@ def load_courses(csv_filename):
             class_no = row["UMS Class No."].strip()
             teacher = row["Teacher"].strip()
             program = row["Program"].strip()
+            campus = row["Campus"].strip()
             day = row["Day"].strip()
             start = time_to_minutes(row["Start Time"].strip())
             end = time_to_minutes(row["End Time"].strip())
@@ -88,6 +89,7 @@ def load_courses(csv_filename):
                     "Teacher": teacher, # TODO: course may have a lab instructor
                     "Course": course_name,
                     "Program": program,
+                    "Campus": campus,
                     "Sessions": []
                 }
                 courses[course_name].append(section)    # add this new section
@@ -199,7 +201,8 @@ def prepare_schedules_for_web_sections(optimized_solutions):
             schedule['courses'][course_name] = {
                 'section': section["UMS Class No."],
                 'teacher': section['Teacher'],
-                'program': section['Program'] 
+                'program': section['Program'],
+                'campus': section['Campus']
             }
             
             for day, start, end in section["Sessions"]:
@@ -209,7 +212,8 @@ def prepare_schedules_for_web_sections(optimized_solutions):
                     'course': course_name,
                     'section': section["UMS Class No."],
                     'teacher': section['Teacher'],
-                    'program': section['Program'] 
+                    'program': section['Program'],
+                    'campus': section['Campus']
                 })
         
         for day, sessions in schedule['days'].items():
@@ -242,6 +246,7 @@ def index():
             'ums_class_no': section["UMS Class No."],
             'teacher': section["Teacher"],
             'program': section["Program"],
+            'campus': section["Campus"],
             'sessions': ", ".join(session_info),
             'section_id': f"{section['Course']}_{section['UMS Class No.']}"
         })

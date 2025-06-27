@@ -36,7 +36,8 @@ function initializeSections() {
             instructor: item.querySelector('.instructor').textContent.toLowerCase(),
             schedule: item.querySelector('.schedule').textContent.toLowerCase(),
             sectionCode: item.querySelector('.section-code').textContent.toLowerCase(),
-            program: item.querySelector('.program') ? item.querySelector('.program').textContent.toLowerCase() : ''
+            program: item.querySelector('.program') ? item.querySelector('.program').textContent.toLowerCase() : '',
+            campus: item.querySelector('.campus').textContent.toLowerCase()
         }
     }));
 

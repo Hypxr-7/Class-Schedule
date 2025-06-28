@@ -86,19 +86,26 @@ def load_courses(csv_filename):
             if section is None:
                 section = {
                     "UMS Class No.": class_no,
-                    "Teacher": teacher, # TODO: course may have a lab instructor
+                    "Teachers": set([teacher]),
                     "Course": course_name,
                     "Program": program,
                     "Campus": campus,
                     "Sessions": []
                 }
                 courses[course_name].append(section)    # add this new section
-                all_sections.append(section)  
+                all_sections.append(section)
+            else:
+                section["Teachers"].add(teacher)
             
             # add the timings and day for the session
             for actual_day in actual_days:
                 section["Sessions"].append((actual_day, start, end))
     
+    # Convert teacher sets to sorted lists for consistent display
+    for section in all_sections:
+        section["Teachers"] = sorted(list(section["Teachers"]))
+    
+
     return courses, all_sections
 
 
@@ -198,9 +205,12 @@ def prepare_schedules_for_web_sections(optimized_solutions):
         
         for section in solution_sections:
             course_name = section["Course"]
+            teachers_display = " & ".join(section["Teachers"])
+            
             schedule['courses'][course_name] = {
                 'section': section["UMS Class No."],
-                'teacher': section['Teacher'],
+                'teacher': teachers_display,
+                'teachers': section['Teachers'],
                 'program': section['Program'],
                 'campus': section['Campus']
             }
@@ -211,7 +221,8 @@ def prepare_schedules_for_web_sections(optimized_solutions):
                     'end': minutes_to_time(end),
                     'course': course_name,
                     'section': section["UMS Class No."],
-                    'teacher': section['Teacher'],
+                    'teacher': teachers_display,
+                    'teachers': section['Teachers'],
                     'program': section['Program'],
                     'campus': section['Campus']
                 })
@@ -241,10 +252,14 @@ def index():
             end_time = minutes_to_time(end)
             session_info.append(f"{day_name} {start_time}-{end_time}")
         
+        # Format teachers - join multiple teachers with " & "
+        teachers_display = " & ".join(section["Teachers"])
+
         sections_for_display.append({
             'course_name': section["Course"],
             'ums_class_no': section["UMS Class No."],
-            'teacher': section["Teacher"],
+            'teacher': teachers_display,
+            'teachers': section["Teachers"],
             'program': section["Program"],
             'campus': section["Campus"],
             'sessions': ", ".join(session_info),

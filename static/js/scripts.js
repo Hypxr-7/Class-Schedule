@@ -37,7 +37,8 @@ function initializeSections() {
             schedule: item.querySelector('.schedule').textContent.toLowerCase(),
             sectionCode: item.querySelector('.section-code').textContent.toLowerCase(),
             program: item.querySelector('.program') ? item.querySelector('.program').textContent.toLowerCase() : '',
-            campus: item.querySelector('.campus').textContent.toLowerCase()
+            campus: item.querySelector('.campus').textContent.toLowerCase(),
+            teachers: item.querySelector('.instructor').textContent.toLowerCase().split(' & ')
         }
     }));
 
@@ -282,11 +283,16 @@ function filterSections(searchTerm) {
     
     filteredSections = term === '' ? [...allSections] : allSections.filter(sectionItem => {
         const data = sectionItem.data;
+        
+        // Check if any individual teacher name matches
+        const teacherMatch = data.teachers.some(teacher => teacher.includes(term));
+        
         return data.courseName.includes(term) || 
                data.instructor.includes(term) || 
+               teacherMatch ||
                data.schedule.includes(term) || 
                data.sectionCode.includes(term) ||
-               data.program.includes(term);;
+               data.program.includes(term)
     });
     
     currentPage = 0;
@@ -539,14 +545,19 @@ function generateCourseSlotHTML(session, schedule) {
     const shortName = session.course.split(' ').filter(w => w.length > 3 || w.match(/^[A-Z]+$/)).join(' ');
     const displayName = shortName.length > 25 ? shortName.substring(0, 22) + '...' : shortName;
     
-    // const instructorDisplay = session.teacher;
+    // Handle multiple teachers - show abbreviated form in timetable
+    let teacherDisplay = session.teacher;
+    if (session.teachers && session.teachers.length > 1) {
+        // For multiple teachers, show count or abbreviated form
+        teacherDisplay = `${session.teachers.length} instructors`;
+    }
     
     return `
         <div class="course-slot" style="height: ${height}px; background-color: ${color};" 
              title="${session.course} - Section ${session.section} - ${session.teacher}">
             <strong>${displayName}</strong><br>
             ${formatTime12Hour(session.start)} - ${formatTime12Hour(session.end)}<br>
-            <small>Sec: ${session.section}<br>${session.teacher}</small>
+            <small>Sec: ${session.section}<br>${teacherDisplay}</small>
         </div>
     `;
 }

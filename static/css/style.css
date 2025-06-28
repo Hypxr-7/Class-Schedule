@@ -273,13 +273,11 @@ h3 {
 }
 
 .section-details .schedule {
-    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
     font-size: 13px;
     color: var(--cyan);
 }
 
 .section-details .program {
-    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
     font-size: 13px;
     color: var(--purple);
     font-weight: 600;
@@ -290,7 +288,6 @@ h3 {
 }
 
 .section-details .campus {
-    font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
     font-size: 13px;
     color: var(--orange);
     font-weight: 600;

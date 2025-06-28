@@ -539,14 +539,14 @@ function generateCourseSlotHTML(session, schedule) {
     const shortName = session.course.split(' ').filter(w => w.length > 3 || w.match(/^[A-Z]+$/)).join(' ');
     const displayName = shortName.length > 25 ? shortName.substring(0, 22) + '...' : shortName;
     
-    const instructorDisplay = formatInstructorName(session.teacher);
+    // const instructorDisplay = session.teacher;
     
     return `
         <div class="course-slot" style="height: ${height}px; background-color: ${color};" 
              title="${session.course} - Section ${session.section} - ${session.teacher}">
             <strong>${displayName}</strong><br>
             ${formatTime12Hour(session.start)} - ${formatTime12Hour(session.end)}<br>
-            <small>Sec: ${session.section}<br>${instructorDisplay}</small>
+            <small>Sec: ${session.section}<br>${session.teacher}</small>
         </div>
     `;
 }
@@ -556,13 +556,13 @@ function generateCourseSlotHTML(session, schedule) {
  * @param {string} instructor - Full instructor name
  * @returns {string} Formatted instructor name
  */
-function formatInstructorName(instructor) {
-    if (instructor.split(' ').length > 1) {
-        let formatted = instructor.split(' ')[0].charAt(0) + ". " + instructor.split(' ').pop();
-        return formatted.length > 15 ? instructor.split(' ').pop() : formatted;
-    }
-    return instructor;
-}
+// function formatInstructorName(instructor) {
+//     if (instructor.split(' ').length > 1) {
+//         let formatted = instructor.split(' ')[0].charAt(0) + ". " + instructor.split(' ').pop();
+//         return formatted.length > 15 ? instructor.split(' ').pop() : formatted;
+//     }
+//     return instructor;
+// }
 
 /**
  * Generate course details HTML

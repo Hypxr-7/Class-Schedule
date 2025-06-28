@@ -335,10 +335,96 @@ h3 {
     align-items: center;
     margin: 20px 0;
     padding: 15px;
-    background-color: var(--bg-tertiary);
+    background-color: var(--bg-accent);
     border-radius: 8px;
     border: 1px solid var(--border-color);
 }
+
+.nav-controls, .action-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.nav-controls span {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin: 0 10px;
+}
+
+/* Screenshot button specific styles */
+#screenshotBtn {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+#screenshotBtn:hover {
+    background-color: var(--primary-hover, #0056b3);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+#screenshotBtn:active {
+    transform: translateY(0);
+}
+
+#screenshotBtn:disabled {
+    background-color: var(--bg-secondary);
+    color: var(--text-secondary);
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+/* Loading state for screenshot button */
+#screenshotBtn.loading {
+    position: relative;
+    color: transparent;
+}
+
+#screenshotBtn.loading::after {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    top: 50%;
+    left: 50%;
+    margin-left: -8px;
+    margin-top: -8px;
+    border: 2px solid #ffffff;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Ensure timetable is properly styled for screenshots */
+/* .timetable {
+    background-color: white;
+    color: #000000;
+}
+
+.timetable th {
+    background-color: #f8f9fa;
+    color: #000000;
+}
+
+.timetable td {
+    background-color: white;
+} */
 
 /* Metrics */
 .metrics {

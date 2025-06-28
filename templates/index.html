@@ -70,12 +70,13 @@
         <div class="results" id="results">
             <h2>Generated Schedules</h2>
             <div class="schedule-nav">
-                <div>
-                    <button class="btn" id="prevBtn" disabled>← Previous</button>
-                    <button class="btn" id="nextBtn">Next →</button>
+                <div class="nav-controls">
+                    <button class="btn btn-secondary" id="prevBtn" disabled>← Previous</button>
+                    <span>Schedule <span id="currentSchedule">1</span> of <span id="totalSchedules">1</span></span>
+                    <button class="btn btn-secondary" id="nextBtn" disabled>Next →</button>
                 </div>
-                <div>
-                    Schedule <span id="currentSchedule">1</span> of <span id="totalSchedules">0</span>
+                <div class="action-controls">
+                    <button class="btn btn-secondary" id="screenshotBtn">📸 Screenshot Timetable</button>
                 </div>
             </div>
 

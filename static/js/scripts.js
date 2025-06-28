@@ -71,11 +71,13 @@ function setupEventListeners() {
     const clearBtn = document.getElementById('clearBtn');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
+    const screenshotBtn = document.getElementById('screenshotBtn');
     
     if (generateBtn) generateBtn.addEventListener('click', generateSchedules);
     if (clearBtn) clearBtn.addEventListener('click', clearSelection);
     if (prevBtn) prevBtn.addEventListener('click', () => navigateSchedule(-1));
     if (nextBtn) nextBtn.addEventListener('click', () => navigateSchedule(1));
+    if (screenshotBtn) screenshotBtn.addEventListener('click', takeScreenshot);
     
     // Pagination buttons (top and bottom)
     setupPaginationListeners();
@@ -419,13 +421,15 @@ function updateScheduleNavigation() {
         current: document.getElementById('currentSchedule'),
         total: document.getElementById('totalSchedules'),
         prev: document.getElementById('prevBtn'),
-        next: document.getElementById('nextBtn')
+        next: document.getElementById('nextBtn'),
+        screenshot: document.getElementById('screenshotBtn')
     };
     
     if (elements.current) elements.current.textContent = currentScheduleIndex + 1;
     if (elements.total) elements.total.textContent = allSchedules.length;
     if (elements.prev) elements.prev.disabled = currentScheduleIndex === 0;
     if (elements.next) elements.next.disabled = currentScheduleIndex === allSchedules.length - 1;
+    if (elements.screenshot) elements.screenshot.disabled = allSchedules.length === 0;
 }
 
 /**
@@ -547,10 +551,10 @@ function generateCourseSlotHTML(session, schedule) {
     
     // Handle multiple teachers - show abbreviated form in timetable
     let teacherDisplay = session.teacher;
-    if (session.teachers && session.teachers.length > 1) {
-        // For multiple teachers, show count or abbreviated form
-        teacherDisplay = `${session.teachers.length} instructors`;
-    }
+    // if (session.teachers && session.teachers.length > 1) {
+    //     // For multiple teachers, show count or abbreviated form
+    //     teacherDisplay = `${session.teachers.length} instructors`;
+    // }
     
     return `
         <div class="course-slot" style="height: ${height}px; background-color: ${color};" 
@@ -612,4 +616,138 @@ function generateTimeSlots() {
         slots.push(`${hour.toString().padStart(2, '0')}:30`);
     }
     return slots;
+}
+
+/* ================================
+   SCREENSHOT FUNCTIONALITY
+   ================================ */
+
+/**
+ * Take a screenshot of the timetable
+ */
+async function takeScreenshot() {
+    const screenshotBtn = document.getElementById('screenshotBtn');
+    const timetable = document.querySelector('.timetable');
+    
+    if (!timetable) {
+        showError('No timetable found to screenshot');
+        return;
+    }
+    
+    try {
+        // Add loading state
+        screenshotBtn.classList.add('loading');
+        screenshotBtn.disabled = true;
+        
+        // Import html2canvas dynamically
+        const html2canvas = await import('https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/+esm');
+        
+        // Configure options for better screenshot quality
+        const options = {
+            backgroundColor: '#ffffff',
+            scale: 2, // Higher resolution
+            useCORS: true,
+            allowTaint: true,
+            scrollX: 0,
+            scrollY: 0,
+            width: timetable.offsetWidth,
+            height: timetable.offsetHeight,
+            onclone: function(clonedDoc) {
+                // Ensure proper styling in the cloned document
+                const clonedTable = clonedDoc.querySelector('.timetable');
+                if (clonedTable) {
+                    clonedTable.style.backgroundColor = '#ffffff';
+                    clonedTable.style.color = '#000000';
+                    clonedTable.style.border = '2px solid #dee2e6';
+                    clonedTable.style.borderRadius = '8px';
+                    clonedTable.style.overflow = 'hidden';
+                    
+                    // Style headers
+                    const headers = clonedTable.querySelectorAll('th');
+                    headers.forEach(th => {
+                        th.style.backgroundColor = '#f8f9fa';
+                        th.style.color = '#000000';
+                        th.style.borderBottom = '2px solid #dee2e6';
+                    });
+                    
+                    // Style cells
+                    const cells = clonedTable.querySelectorAll('td');
+                    cells.forEach(td => {
+                        td.style.backgroundColor = '#ffffff';
+                        td.style.border = '1px solid #dee2e6';
+                    });
+                }
+            }
+        };
+        
+        // Generate canvas
+        const canvas = await html2canvas.default(timetable, options);
+        
+        // Create download link
+        const link = document.createElement('a');
+        link.download = `timetable-schedule-${currentScheduleIndex + 1}-${new Date().toISOString().split('T')[0]}.png`;
+        link.href = canvas.toDataURL('image/png', 1.0);
+        
+        // Trigger download
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        // Show success message briefly
+        showTemporaryMessage('Screenshot saved successfully! 📸', 'success');
+        
+    } catch (error) {
+        console.error('Screenshot failed:', error);
+        showError('Failed to take screenshot. Please try again.');
+    } finally {
+        // Remove loading state
+        screenshotBtn.classList.remove('loading');
+        screenshotBtn.disabled = false;
+    }
+}
+
+/**
+ * Show temporary success/info message
+ * @param {string} message - Message to show
+ * @param {string} type - Type of message ('success', 'info', 'warning')
+ */
+function showTemporaryMessage(message, type = 'info') {
+    // Create message element
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `temp-message ${type}`;
+    messageDiv.textContent = message;
+    messageDiv.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 12px 20px;
+        background-color: ${type === 'success' ? '#28a745' : type === 'warning' ? '#ffc107' : '#17a2b8'};
+        color: white;
+        border-radius: 6px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+        font-weight: 600;
+        opacity: 0;
+        transform: translateX(100%);
+        transition: all 0.3s ease;
+    `;
+    
+    document.body.appendChild(messageDiv);
+    
+    // Animate in
+    setTimeout(() => {
+        messageDiv.style.opacity = '1';
+        messageDiv.style.transform = 'translateX(0)';
+    }, 100);
+    
+    // Animate out and remove
+    setTimeout(() => {
+        messageDiv.style.opacity = '0';
+        messageDiv.style.transform = 'translateX(100%)';
+        setTimeout(() => {
+            if (messageDiv.parentNode) {
+                document.body.removeChild(messageDiv);
+            }
+        }, 300);
+    }, 3000);
 }

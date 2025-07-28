@@ -354,7 +354,7 @@ h3 {
 
 /* Screenshot button specific styles */
 #screenshotBtn {
-    background-color: var(--primary);
+    background-color: var(--bg-secondary);
     color: white;
     border: none;
     padding: 8px 16px;

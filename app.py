@@ -9,7 +9,7 @@ from constraint import Problem
 app = Flask(__name__)
 
 
-FILENAME = "sp25-ug-cs.csv"
+FILENAME = "fa25-ug-cs5-.csv"
 
 
 # Day mapping to expand day codes
@@ -342,4 +342,4 @@ def generate_schedules():
         return jsonify({'error': str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)

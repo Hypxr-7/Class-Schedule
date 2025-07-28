@@ -1,0 +1,21 @@
+Day,Start Time,End Time,Course,UMS Class No.,Teacher,Program,Campus
+MW,8:30,9:45,Software Engineering,1,Mr. Ahmed Jawed,BSCS,Main
+TR,8:30,9:45,Software Engineering,2,Mr. Ahmed Jawed,BSCS,Main
+MW,11:30,12:45,Software Engineering,3,TBA,BSCS,Main
+TR,11:30,12:45,Software Engineering,4,TBA,BSCS,Main
+MW,8:30,9:45,Operating Systems,5,Mr. Waseem Arain,BSCS,Main
+TR,8:30,9:45,Operating Systems,6,Dr. Salman Zafar,BSCS,Main
+MW,10:00,11:15,Operating Systems,7,Mr. Waseem Arain,BSCS,Main
+TR,10:00,11:15,Operating Systems,8,Dr. Salman Zafar,BSCS,Main
+R,8:30,11:15,Database Systems,9,Ms. Abeera Tariq,BSCS,Main
+R,11:30,14:15,Database Systems,10,Ms. Abeera Tariq,BSCS,Main
+MW,10:00,11:15,Database Systems,9,Ms. Abeera Tariq,BSCS,Main
+MW,11:30,12:45,Database Systems,10,Ms. Abeera Tariq,BSCS,Main
+TR,11:30,12:45,Business Communications,11,Talat Davis,BSCS,Main
+TR,13:00,14:15,Business Communications,12,Talat Davis,BSCS,Main
+M,10:00,12:45,Data Structures,13,Dr. Imran Rauf,BSCS,Main
+M,14:30,17:15,Data Structures,14,Dr. Imran Rauf,BSCS,Main
+MW,11:30,12:45,Business Intelligence,15,TBA,BSCS,Main
+MW,13:00,14:15,Data Warehousing,16,Tariq Mehmood,BSCS,Main
+TR,13:00,14:15,Web Based App Dev,17,Adil Saleem,BSCS,Main
+MW,14:30,15:45,Computer Security,18,Faisal Iradat,BSCS,Main

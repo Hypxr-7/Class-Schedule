@@ -1,0 +1,45 @@
+Day,Start Time,End Time,Course,UMS Class No.,Teacher,Program,Campus
+FS,8:30,9:45,Introduction to DevOps,1,Mr. Syed Mohammad Sualeh Ali,BSCS,Main
+TR,10:00,11:15,NLP with Deep Learning,2,Dr. Sajjad Haider,BSCS,Main
+TR,10:00,11:15,Business Intelligence,3,Dr. Imran Khan,BSCS,Main
+TR,10:00,11:15,Advanced Algorithms,4,Dr. Shahid Hussain,BSCS,Main
+TR,10:00,11:15,Business Intelligence,5,Ms. Abeera Tariq,BSCS,Main
+TR,11:30,12:45,Generative AI,6,Dr. Atif Tahir,BSCS,Main
+TR,11:30,12:45,NLP with Deep Learning,7,Dr. Sajjad Haider,BSCS,Main
+TR,13:00,14:15,Introduction to Computer Vision,8,Dr. Rizwan Khan,BSCS,Main
+TR,13:00,14:15,Software Testing,9,Mr. Farrukh Hassan,BSCS,Main
+MW,13:00,14:15,NLP with Deep Learning,10,Ms. Solat Jabeen,BSCS,Main
+MW,14:30,15:45,Data Warehousing,11,Dr. Tariq Mehmood,BSCS,Main
+TR,14:30,15:45,Introduction to Blockchain,12,Dr. Ahmed Akhtar,BSCS,Main
+MW,14:30,15:45,Neural Networks and Deep Learning,13,TBA,BSCS,Main
+MW,14:30,15:45,Network Security,14,Dr. Faisal Iradat,BSCS,Main
+W,16:00,18:45,Tech Product Development,16,Mr. Jawwad Ahmed Farid,BSCS,Main
+R,16:00,18:45,Data Model Decisions,17,Mr. Jawwad Ahmed Farid,BSCS,Main
+TR,16:00,17:15,Web Based Application Developlment,18,Dr. Ahmed Akhtar,BSCS,Main
+MW,10:00,11:15,Design and Analysis of Algorithm,19,Dr. Shahid Hussain,BSCS,Main
+TR,13:00,14:15,Design and Analysis of Algorithm,20,Dr. Taslim Murad,BSCS,Main
+TR,14:30,15:45,Design and Analysis of Algorithm,21,Dr. Taslim Murad,BSCS,Main
+MW,8:30,9:45,Parallel and Distributed Computing,22,Mr. M. Zain Uddin,BSCS,Main
+W,10:00,12:45,Parallel and Distributed Computing,22,Mr. M. Zain Uddin,BSCS,Main
+TR,8:30,9:45,Parallel and Distributed Computing,23,Mr. M. Zain Uddin,BSCS,Main
+T,10:00,12:45,Parallel and Distributed Computing,23,Mr. M. Zain Uddin,BSCS,Main
+MW,13:00,14:15,Parallel and Distributed Computing,24,Mr. M. Adil Saleem,BSCS,Main
+W,14:30,17:15,Parallel and Distributed Computing,24,Mr. M. Adil Saleem,BSCS,Main
+MW,14:30,15:45,Arabic 1,25,Mr. Syed Farid Iqbal,BSCS,Main
+MW,16:00,17:15,Arabic 1,25,Mr. Syed Farid Iqbal,BSCS,Main
+MW,14:30,15:45,Arabic 1,26,Mr. Muhammad Naeem,BSCS,Main
+MW,16:00,17:15,Arabic 1,26,Mr. Muhammad Naeem,BSCS,Main
+TR,14:30,15:45,Arabic 1,27,Mr. Abdullah M Yousuf,BSCS,Main
+TR,16:00,17:15,Arabic 1,27,Mr. Abdullah M Yousuf,BSCS,Main
+FS,14:30,15:45,Arabic 1,28,Mr. Ali Zaman,BSCS,Main
+FS,16:00,17:15,Arabic 1,28,Mr. Ali Zaman,BSCS,Main
+MW,14:30,15:45,Arabic 1,29,Mr. Abu Tahir Siddiq,BSCS,Main
+MW,16:00,17:15,Arabic 1,29,Mr. Abu Tahir Siddiq,BSCS,Main
+MW,10:00,11:15,Probability Theory,30,Dr. Amir Bashir,BSCS,Main
+TR,10:00,11:15,Probability Theory,31,Dr. Amir Bashir,BSCS,Main
+TR,10:00,11:15,Principles of Marketing,30,Ms. Alia Hasan,BSCS,Main
+TR,11:30,12:45,Principles of Marketing,31,Ms. Alia Hasan,BSCS,Main
+TR,10:00,11:15,German 1,32,Ms. Mokhashaf Muntazir,BSCS,Main
+TR,11:30,12:45,German 1,32,Ms. Mokhashaf Muntazir,BSCS,Main
+TR,14:30,15:45,German 1,33,Ms. Huma Ghazanfar,BSCS,Main
+TR,16:00,17:15,German 1,33,Ms. Huma Ghazanfar,BSCS,Main

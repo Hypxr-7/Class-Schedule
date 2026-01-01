@@ -9,7 +9,7 @@ from constraint import Problem
 app = Flask(__name__)
 
 
-FILENAME = "fa25-ug-cs5.csv"
+FILENAME = "sp26-ug-cs.csv"
 
 
 # Day mapping to expand day codes
